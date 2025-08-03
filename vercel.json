@@ -1,6 +1,6 @@
 {
   "env": {
-    "NEXT_PUBLIC_FRONTEND_URL": "https://runk-fe.vercel.app",
+    "NEXT_PUBLIC_FRONTEND_URL": "https://runk-app.vercel.app",
     "NEXT_PUBLIC_BACKEND_SERVER": "https://runk.onrender.com"
   },
   "rewrites": [
