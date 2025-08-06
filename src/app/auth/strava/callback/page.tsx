@@ -65,6 +65,10 @@ function StravaCallbackContent() {
           Object.fromEntries(response.headers.entries())
         );
 
+        // Controlla specificamente i cookie nella risposta
+        const setCookieHeader = response.headers.get("set-cookie");
+        console.log("🍪 Set-Cookie header:", setCookieHeader);
+
         const responseText = await response.text();
         console.log("🔍 Response body:", responseText);
 
@@ -87,9 +91,25 @@ function StravaCallbackContent() {
           throw new Error(`Errore HTTP: ${response.status} - ${responseText}`);
         }
         console.log("✅ Callback riuscito:", data);
+
+        // Verifica i cookie dopo la richiesta
+        const cookiesAfterRequest = document.cookie;
+        console.log("🍪 Cookie dopo la richiesta:", cookiesAfterRequest);
+
+        // Se non ci sono cookie, c'è un problema con il backend
+        if (!cookiesAfterRequest.includes("authenticated")) {
+          console.error(
+            "❌ ERRORE: Il backend non ha impostato i cookie di autenticazione!"
+          );
+          console.error("🔍 Set-Cookie header mancante o malformato");
+          console.error("🔧 Il backend deve impostare i cookie con:");
+          console.error("   - SameSite=None");
+          console.error("   - Secure=true");
+          console.error("   - Domain appropriato per cross-origin");
+        }
+
         setUser(data.user);
-        // L'auth provider gestirà automaticamente l'autenticazione tramite i cookie
-        // Non serve chiamare login() qui perché l'auth provider rileverà i cookie
+        // L'auth provider gestirà automaticamente l'autenticazione tramite i cookie o localStorage
 
         // Reindirizza automaticamente alla dashboard dopo 2 secondi
         setTimeout(() => {

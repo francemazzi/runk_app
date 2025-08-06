@@ -11,6 +11,7 @@ export interface StravaAuthResponse {
 export interface StravaCallbackResponse {
   message: string;
   user: StravaUser;
+  sessionId?: string;
 }
 
 export interface StravaAuthState {
